@@ -24,11 +24,11 @@ const nunjucks = require('nunjucks');
 const through = require('through2');
 const {htmlContent} = require('@lib/utils/cheerioHelper');
 const {project} = require('@lib/utils');
-const {survey} = require('@lib/templates/SurveyFilter.js');
-const {importBlog} = require('@lib/templates/ImportBlogFilter.js');
-const {
-  importYouTubeChannel,
-} = require('@lib/templates/ImportYouTubeChannel.js');
+// const {survey} = require('@lib/templates/SurveyFilter.js');
+// const {importBlog} = require('@lib/templates/ImportBlogFilter.js');
+// const {
+//   importYouTubeChannel,
+// } = require('@lib/templates/ImportYouTubeChannel.js');
 const {
   SupportedFormatsExtension,
 } = require('@lib/templates/SupportedFormatsExtension.js');
@@ -59,29 +59,29 @@ const getUpdatedURL = (u, requestedFormat, forcedFormat) => {
  * creates a new nunjucks environment for rendering
  *
  */
-function nunjucksEnv() {
-  const env = new nunjucks.Environment(null, {
-    tags: {
-      blockStart: '[%',
-      blockEnd: '%]',
-      variableStart: '[=',
-      variableEnd: '=]',
-      commentStart: '[[[[#',
-      commentEnd: '#]]]]',
-    },
-  });
-
-  env.addExtension(
-    'SupportedFormatsExtension',
-    new SupportedFormatsExtension()
-  );
-  env.addFilter('importBlog', importBlog, true);
-
-  env.addFilter('importYouTubeChannel', importYouTubeChannel, true);
-  env.addFilter('survey', survey, true);
-
-  return env;
-}
+// function nunjucksEnv() {
+//   const env = new nunjucks.Environment(null, {
+//     tags: {
+//       blockStart: '[%',
+//       blockEnd: '%]',
+//       variableStart: '[=',
+//       variableEnd: '=]',
+//       commentStart: '[[[[#',
+//       commentEnd: '#]]]]',
+//     },
+//   });
+// 
+//   env.addExtension(
+//     'SupportedFormatsExtension',
+//     new SupportedFormatsExtension()
+//   );
+//   env.addFilter('importBlog', importBlog, true);
+// 
+//   env.addFilter('importYouTubeChannel', importYouTubeChannel, true);
+//   env.addFilter('survey', survey, true);
+// 
+//   return env;
+// }
 
 /**
  * Compiles the pages into standalone static files
