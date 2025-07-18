@@ -20,7 +20,7 @@ const Cheerio = require('cheerio');
 const Vinyl = require('vinyl');
 const config = require('@lib/config');
 const gulp = require('gulp');
-const nunjucks = require('nunjucks');
+// const nunjucks = require('nunjucks');
 const through = require('through2');
 const {htmlContent} = require('@lib/utils/cheerioHelper');
 const {project} = require('@lib/utils');
@@ -29,9 +29,9 @@ const {project} = require('@lib/utils');
 // const {
 //   importYouTubeChannel,
 // } = require('@lib/templates/ImportYouTubeChannel.js');
-const {
-  SupportedFormatsExtension,
-} = require('@lib/templates/SupportedFormatsExtension.js');
+// const {
+//   SupportedFormatsExtension,
+// } = require('@lib/templates/SupportedFormatsExtension.js');
 const {
   FORMAT_WEBSITES,
   SUPPORTED_FORMATS,
@@ -70,16 +70,16 @@ const getUpdatedURL = (u, requestedFormat, forcedFormat) => {
 //       commentEnd: '#]]]]',
 //     },
 //   });
-// 
+//
 //   env.addExtension(
 //     'SupportedFormatsExtension',
 //     new SupportedFormatsExtension()
 //   );
 //   env.addFilter('importBlog', importBlog, true);
-// 
+//
 //   env.addFilter('importYouTubeChannel', importYouTubeChannel, true);
 //   env.addFilter('survey', survey, true);
-// 
+//
 //   return env;
 // }
 
