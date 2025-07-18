@@ -57,7 +57,7 @@ function clean() {
       project.paths.DIST,
       project.paths.BUILD,
 
-      project.absolute('boilerplate/dist'),
+      // project.absolute('boilerplate/dist'),
 
       project.paths.CSS,
       project.absolute('pages/extensions/**/*.pyc'),
@@ -189,11 +189,11 @@ function buildFrontend(done) {
  * Builds the boilerplate generator
  * @return {Promise}
  */
-function buildBoilerplate() {
-  return sh('node build.js', {
-    workingDir: project.absolute('boilerplate'),
-  });
-}
+// function buildBoilerplate() {
+//   return sh('node build.js', {
+//     workingDir: project.absolute('boilerplate'),
+//   });
+// }
 
 /**
  * Builds documentation pages, preview pages and source files by parsing
@@ -272,7 +272,7 @@ function buildPrepare(done) {
     // buildSamples,
     gulp.parallel(
       // buildPlayground,
-      buildBoilerplate,
+      // buildBoilerplate,
       // buildPixi,
       buildFrontend21,
       importAll,
@@ -288,8 +288,8 @@ function buildPrepare(done) {
         './pages/content/',
         './pages/shared/',
         './dist/',
-        './boilerplate/lib/',
-        './boilerplate/dist/',
+        // './boilerplate/lib/',
+        // './boilerplate/dist/',
         // './playground/dist/',
         './frontend21/dist/',
         './.cache/',
@@ -766,7 +766,7 @@ exports.importAll = importAll;
 exports.importComponents = importComponents;
 // exports.buildPlayground = buildPlayground;
 // exports.buildPixi = buildPixi;
-exports.buildBoilerplate = buildBoilerplate;
+// exports.buildBoilerplate = buildBoilerplate;
 exports.buildFrontend = buildFrontend;
 // exports.buildSamples = buildSamples;
 exports.zipTemplates = zipTemplates;
@@ -790,4 +790,5 @@ exports.build = gulp.series(
   gulp.parallel(collectStatics, persistBuildInfo)
 );
 
-exports.buildForGrowTests = gulp.series(buildBoilerplate, buildPages);
+// exports.buildForGrowTests = gulp.series(buildBoilerplate, buildPages);
+exports.buildForGrowTests = gulp.series(buildPages);
