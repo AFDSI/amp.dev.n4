@@ -74,7 +74,7 @@ function clean() {
       project.absolute('pages/.depcache.json'),
       project.absolute('pages/podspec.yaml'),
 
-      project.absolute('examples/static/samples/samples.json'),
+      // project.absolute('examples/static/samples/samples.json'),
 
       project.paths.GROW_BUILD_DEST,
       project.paths.STATICS_DEST,
@@ -293,7 +293,7 @@ function buildPrepare(done) {
         // './playground/dist/',
         './frontend21/dist/',
         './.cache/',
-        './examples/static/samples/samples.json',
+        // './examples/static/samples/samples.json',
       ];
 
       await sh('mkdir -p artifacts');
@@ -454,7 +454,7 @@ function buildPages(done) {
       done();
     },
     staticify,
-    renderExamples,
+    // renderExamples,
     optimizeFiles,
     // eslint-disable-next-line prefer-arrow-callback
     function sitemap() {
@@ -665,7 +665,7 @@ function collectStatics(done) {
   gulp
     .src([
       project.absolute('pages/static/**/*'),
-      project.absolute('examples/static/**/*'),
+      // project.absolute('examples/static/**/*'),
       project.absolute('frontend21/dist/static/**/*'),
     ])
     .pipe(
