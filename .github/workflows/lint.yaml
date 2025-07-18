@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m  # or ubuntu-latest-2xl when testing
     steps:
       - name: Cloning repository
         uses: actions/checkout@v4
