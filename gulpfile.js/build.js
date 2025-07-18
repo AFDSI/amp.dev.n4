@@ -1,19 +1,3 @@
-/**
- * Copyright 2019 The AMP HTML Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS-IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 'use strict';
 
 const gulp = require('gulp');
@@ -36,23 +20,23 @@ const SpecImporter = require('@lib/pipeline/specImporter');
 const RecentGuides = require('@lib/pipeline/recentGuides');
 const gulpSass = require('gulp-sass')(require('sass'));
 const importRoadmap = require('./import/importRoadmap.js');
-const importWorkingGroups = require('./import/importWorkingGroups.js');
+// const importWorkingGroups = require('./import/importWorkingGroups.js');
 const {staticify} = require('./staticify.js');
 const {whoAmI} = require('./whoAmI.js');
-const importAdVendorList = require('./import/importAdVendorList.js');
+// const importAdVendorList = require('./import/importAdVendorList.js');
 const {thumborImageIndex} = require('./thumbor.js');
 const CleanCSS = require('clean-css');
-const {PIXI_CLOUD_ROOT} = require('@lib/utils/project').paths;
+// const {PIXI_CLOUD_ROOT} = require('@lib/utils/project').paths;
 const {copyFile} = require('fs/promises');
-const nunjucks = require('nunjucks');
-const {importBlog} = require('@lib/templates/ImportBlogFilter.js');
-const {
-  importYouTubeChannel,
-} = require('@lib/templates/ImportYouTubeChannel.js');
-const {survey} = require('@lib/templates/SurveyFilter.js');
-const {
-  SupportedFormatsExtension,
-} = require('@lib/templates/SupportedFormatsExtension.js');
+// const nunjucks = require('nunjucks');
+// const {importBlog} = require('@lib/templates/ImportBlogFilter.js');
+// const {
+//   importYouTubeChannel,
+// } = require('@lib/templates/ImportYouTubeChannel.js');
+// const {survey} = require('@lib/templates/SurveyFilter.js');
+// const {
+//   SupportedFormatsExtension,
+// } = require('@lib/templates/SupportedFormatsExtension.js');
 const {optimize} = require('@lib/utils/ampOptimizer.js');
 const toml = require('@iarna/toml');
 
@@ -187,19 +171,19 @@ async function buildPlayground() {
  * Builds Pixi
  * @return {Promise}
  */
-async function buildPixi() {
-  await sh('mkdir -p pixi/dist');
-  return sh('npm run build:pixi');
-}
+// async function buildPixi() {
+//   await sh('mkdir -p pixi/dist');
+//   return sh('npm run build:pixi');
+// }
 
 /**
  * Builds the pixi cloud functions project
  */
-function buildPixiFunctions() {
-  return sh('npm install', {
-    workingDir: PIXI_CLOUD_ROOT,
-  });
-}
+// function buildPixiFunctions() {
+//   return sh('npm install', {
+//     workingDir: PIXI_CLOUD_ROOT,
+//   });
+// }
 
 /**
  * Builds the boilerplate generator
@@ -217,9 +201,9 @@ function buildBoilerplate() {
  *
  * @return {Promise}
  */
-function buildSamples() {
-  return samplesBuilder.build();
-}
+// function buildSamples() {
+//   return samplesBuilder.build();
+// }
 
 /**
  * Zips templates for download.
@@ -261,8 +245,8 @@ function importAll() {
     new SpecImporter().import(),
     new RecentGuides().import(),
     importRoadmap.importRoadmap(),
-    importWorkingGroups.importWorkingGroups(),
-    importAdVendorList.importAdVendorList(),
+    // importWorkingGroups.importWorkingGroups(),
+    // importAdVendorList.importAdVendorList(),
   ]);
 }
 
@@ -500,29 +484,29 @@ function buildPages(done) {
  * creates a new nunjucks environment for rendering
  *
  */
-function nunjucksEnv() {
-  const env = new nunjucks.Environment(null, {
-    tags: {
-      blockStart: '[%',
-      blockEnd: '%]',
-      variableStart: '[=',
-      variableEnd: '=]',
-      commentStart: '[[[[#',
-      commentEnd: '#]]]]',
-    },
-  });
-
-  env.addExtension(
-    'SupportedFormatsExtension',
-    new SupportedFormatsExtension()
-  );
-  env.addFilter('importBlog', importBlog, true);
-
-  env.addFilter('importYouTubeChannel', importYouTubeChannel, true);
-  env.addFilter('survey', survey, true);
-
-  return env;
-}
+// function nunjucksEnv() {
+//   const env = new nunjucks.Environment(null, {
+//     tags: {
+//       blockStart: '[%',
+//       blockEnd: '%]',
+//       variableStart: '[=',
+//       variableEnd: '=]',
+//       commentStart: '[[[[#',
+//       commentEnd: '#]]]]',
+//     },
+//   });
+//
+//   env.addExtension(
+//     'SupportedFormatsExtension',
+//     new SupportedFormatsExtension()
+//   );
+//   env.addFilter('importBlog', importBlog, true);
+//
+//   env.addFilter('importYouTubeChannel', importYouTubeChannel, true);
+//   env.addFilter('survey', survey, true);
+//
+//   return env;
+// }
 
 function optimizeFiles(cb) {
   return gulp
@@ -548,86 +532,86 @@ function optimizeFiles(cb) {
     .on('end', cb);
 }
 
-function newPost(text, img, id) {
-  return {
-    id: id,
-    text: text,
-    img: '/static/samples/img/' + img,
-    timestamp: Number(new Date()),
-  };
-}
-
-async function renderExamples(done) {
-  const logger = require('@lib/utils/log')('Static File Generator');
-  const env = nunjucksEnv();
-  const blogItems = [
-    newPost('A green landscape with trees.', 'landscape_green_1280x853.jpg', 1),
-    newPost(
-      'Mountains reflecting on a lake.',
-      'landscape_mountains_1280x657.jpg',
-      2
-    ),
-    newPost(
-      'A road leading to a lake with mountains on the back.',
-      'landscape_lake_1280x857.jpg',
-      3
-    ),
-    newPost(
-      'Forested hills with a grey sky in the background.',
-      'landscape_trees_1280x960.jpg',
-      4
-    ),
-    newPost(
-      'Scattered houses in a mountain village.',
-      'landscape_village_1280x853.jpg',
-      5
-    ),
-    newPost('A deep canyon.', 'landscape_canyon_1280x1700.jpg', 6),
-    newPost(
-      'A desert with mountains in the background.',
-      'landscape_desert_1280x853.jpg',
-      7
-    ),
-    newPost('Colorful houses on a street.', 'landscape_houses_1280x803.jpg', 8),
-    newPost('Blue sea surrounding a cave.', 'landscape_sea_1280x848.jpg', 9),
-    newPost(
-      'A ship sailing the sea at sunset.',
-      'landscape_ship_1280x853.jpg',
-      10
-    ),
-  ];
-
-  const configObj = {
-    time: new Date().toLocaleTimeString(),
-    timestamp: Number(new Date()),
-    // send a random list of blog items to make it also work on the cache
-    blogItems: blogItems.filter(() =>
-      Math.floor(Math.random() * Math.floor(2))
-    ),
-  };
-
-  return gulp
-    .src(`${project.paths.DIST}/examples/sources/**/*.html`)
-    .pipe(
-      through.obj(async (file, enc, callback) => {
-        const srcHTML = file.contents.toString();
-
-        env.renderString(srcHTML, configObj, (err, result) => {
-          if (err) {
-            logger.error(`Error rendering ${file.path}`);
-            return callback(err);
-          }
-
-          file.contents = Buffer.from(result);
-          callback(null, file);
-        });
-      })
-    )
-    .pipe(gulp.dest((f) => f.base))
-    .on('end', () => {
-      done();
-    });
-}
+// function newPost(text, img, id) {
+//   return {
+//     id: id,
+//     text: text,
+//     img: '/static/samples/img/' + img,
+//     timestamp: Number(new Date()),
+//   };
+// }
+//
+// async function renderExamples(done) {
+//   const logger = require('@lib/utils/log')('Static File Generator');
+//   const env = nunjucksEnv();
+//   const blogItems = [
+//     newPost('A green landscape with trees.', 'landscape_green_1280x853.jpg', 1),
+//     newPost(
+//       'Mountains reflecting on a lake.',
+//       'landscape_mountains_1280x657.jpg',
+//       2
+//     ),
+//     newPost(
+//       'A road leading to a lake with mountains on the back.',
+//       'landscape_lake_1280x857.jpg',
+//       3
+//     ),
+//     newPost(
+//       'Forested hills with a grey sky in the background.',
+//       'landscape_trees_1280x960.jpg',
+//       4
+//     ),
+//     newPost(
+//       'Scattered houses in a mountain village.',
+//       'landscape_village_1280x853.jpg',
+//       5
+//     ),
+//     newPost('A deep canyon.', 'landscape_canyon_1280x1700.jpg', 6),
+//     newPost(
+//       'A desert with mountains in the background.',
+//       'landscape_desert_1280x853.jpg',
+//       7
+//     ),
+//     newPost('Colorful houses on a street.', 'landscape_houses_1280x803.jpg', 8),
+//     newPost('Blue sea surrounding a cave.', 'landscape_sea_1280x848.jpg', 9),
+//     newPost(
+//       'A ship sailing the sea at sunset.',
+//       'landscape_ship_1280x853.jpg',
+//       10
+//     ),
+//   ];
+//
+//   const configObj = {
+//     time: new Date().toLocaleTimeString(),
+//     timestamp: Number(new Date()),
+//     // send a random list of blog items to make it also work on the cache
+//     blogItems: blogItems.filter(() =>
+//       Math.floor(Math.random() * Math.floor(2))
+//     ),
+//   };
+//
+//   return gulp
+//     .src(`${project.paths.DIST}/examples/sources/**/*.html`)
+//     .pipe(
+//       through.obj(async (file, enc, callback) => {
+//         const srcHTML = file.contents.toString();
+//
+//         env.renderString(srcHTML, configObj, (err, result) => {
+//           if (err) {
+//             logger.error(`Error rendering ${file.path}`);
+//             return callback(err);
+//           }
+//
+//           file.contents = Buffer.from(result);
+//           callback(null, file);
+//         });
+//       })
+//     )
+//     .pipe(gulp.dest((f) => f.base))
+//     .on('end', () => {
+//       done();
+//     });
+// }
 
 /**
  * Removes unnecessary whitespace from rendered pages and minifies their CSS
@@ -781,7 +765,7 @@ exports.templates = templates;
 exports.importAll = importAll;
 exports.importComponents = importComponents;
 exports.buildPlayground = buildPlayground;
-exports.buildPixi = buildPixi;
+// exports.buildPixi = buildPixi;
 exports.buildBoilerplate = buildBoilerplate;
 exports.buildFrontend = buildFrontend;
 exports.buildSamples = buildSamples;
@@ -793,7 +777,7 @@ exports.staticify = staticify;
 exports.unpackArtifacts = unpackArtifacts;
 exports.collectStatics = collectStatics;
 exports.whoAmI = whoAmI;
-exports.buildPixiFunctions = buildPixiFunctions;
+// exports.buildPixiFunctions = buildPixiFunctions;
 exports.buildFinalize = gulp.series(
   gulp.parallel(collectStatics, persistBuildInfo),
   thumborImageIndex

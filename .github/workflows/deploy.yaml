@@ -20,7 +20,7 @@ on:
 
 jobs:
   queue:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m  # or ubuntu-latest-2xl when testing
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
@@ -33,7 +33,7 @@ jobs:
           paths_ignore: '["**/README.md", "**/docs/**"]'
           do_not_skip: '["workflow_dispatch", "schedule"]'
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m  # or ubuntu-latest-2xl when testing
     steps:
       - name: Cloning repository
         uses: actions/checkout@v4
@@ -56,7 +56,7 @@ jobs:
           npm run test:playground
   prepare:
     needs: verify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m  # or ubuntu-latest-2xl when testing
     steps:
       - name: Cloning repository
         uses: actions/checkout@v4
@@ -75,7 +75,7 @@ jobs:
           APP_ENV: production
           AMP_DOC_TOKEN: ${{ secrets.AMP_DOC_TOKEN }}
         run: |
-          npx gulp buildPrepare --queue-imports
+          npx gulp buildPrepare
 
       - name: Storing build artifacts
         uses: actions/upload-artifact@v4
@@ -92,22 +92,22 @@ jobs:
         language:
           [
             'en',
-            'de',
+            # 'de',
             'fr',
-            'ar',
+            # 'ar',
             'es',
-            'it',
-            'id',
-            'ja',
-            'ko',
+            # 'it',
+            # 'id',
+            # 'ja',
+            # 'ko',
             'pt_BR',
-            'ru',
-            'tr',
-            'zh_CN',
-            'pl',
-            'vi',
+            # 'ru',
+            # 'tr',
+            # 'zh_CN',
+            # 'pl',
+            # 'vi',
           ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m  # or ubuntu-latest-2xl when testing
     steps:
       - name: Cloning repository
         uses: actions/checkout@v4
@@ -153,11 +153,11 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-m  # or ubuntu-latest-2xl when testing
     environment: Production
     env:
       APP_ENV: production
-      NETLIFY_DEPLOY_TOKEN: ${{ secrets.NETLIFY_DEPLOY_TOKEN }}
+      # NETLIFY_DEPLOY_TOKEN: ${{ secrets.NETLIFY_DEPLOY_TOKEN }} # Commented out from env block as it's passed directly
     steps:
       - name: Cloning repository
         uses: actions/checkout@v4
@@ -188,4 +188,6 @@ jobs:
         env:
           DEPLOY_ENVIRONMENT: ${{ inputs.deploy-environment || 'Staging' }}
         run: |
-          npx gulp staticDeploy
+          # Explicitly use Netlify CLI with your specific Site ID
+          NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_DEPLOY_TOKEN }} npx netlify deploy --prod --site 69bbcc85-2aad-4a49-be6f-b6caef14bf1a --dir /home/runner/work/amp.dev.n2/amp.dev.n2/dist/pages
+          # Ensure that /home/runner/work/amp.dev.n2/amp.dev.n2/dist/pages is the correct build output directory.
